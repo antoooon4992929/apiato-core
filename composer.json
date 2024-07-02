@@ -52,7 +52,7 @@
         "psalm/plugin-mockery": "^1.1",
         "psalm/plugin-phpunit": "^0.18.4",
         "roave/security-advisories": "dev-latest",
-        "vimeo/psalm": "^5.8.0"
+        "vimeo/psalm": "^5.25.0"
     },
     "autoload": {
         "psr-4": {
