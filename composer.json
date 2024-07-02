@@ -44,7 +44,7 @@
         "friendsofphp/php-cs-fixer": "^3.8.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "mockery/mockery": "^1.4.4",
-        "orchestra/testbench": "^8.15",
+        "orchestra/testbench": "^9.1.2",
         "php-standard-library/psalm-plugin": "^2.3",
         "phpmd/phpmd": "@stable",
         "phpunit/phpunit": "^10.0",
