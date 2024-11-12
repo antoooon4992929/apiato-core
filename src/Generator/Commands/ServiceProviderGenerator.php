@@ -16,36 +16,42 @@ class ServiceProviderGenerator extends GeneratorCommand implements ComponentsGen
     public array $inputs = [
         ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
     ];
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'apiato:generate:provider';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a Service Provider for a Container';
+
     /**
      * The type of class being generated.
      */
     protected string $fileType = 'ServiceProvider';
+
     /**
      * The structure of the file path.
      */
     protected string $pathStructure = '{section-name}/{container-name}/Providers/*';
+
     /**
      * The structure of the file name.
      */
     protected string $nameStructure = '{file-name}';
+
     /**
      * The name of the stub file.
      */
     protected string $stubName = 'providers/mainserviceprovider.stub';
 
-    public function getUserInputs(): array|null
+    public function getUserInputs(): ?array
     {
         $stub = Str::lower(
             $this->checkParameterOrChoice(
@@ -57,7 +63,7 @@ class ServiceProviderGenerator extends GeneratorCommand implements ComponentsGen
         );
 
         // load a new stub-file based on the users choice
-        $this->stubName = 'providers/' . $stub . '.stub';
+        $this->stubName = 'providers/'.$stub.'.stub';
 
         return [
             'path-parameters' => [

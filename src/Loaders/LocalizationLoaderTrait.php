@@ -9,7 +9,7 @@ trait LocalizationLoaderTrait
 {
     public function loadLocalsFromContainers($containerPath): void
     {
-        $containerLocaleDirectory = $containerPath . '/Languages';
+        $containerLocaleDirectory = $containerPath.'/Languages';
         $containerName = basename($containerPath);
         $pathParts = explode(DIRECTORY_SEPARATOR, $containerPath);
         $sectionName = $pathParts[count($pathParts) - 2];
@@ -25,9 +25,9 @@ trait LocalizationLoaderTrait
         }
     }
 
-    private function buildLocaleNamespace(string|null $sectionName, string $containerName): string
+    private function buildLocaleNamespace(?string $sectionName, string $containerName): string
     {
-        return $sectionName ? (Str::camel($sectionName) . '@' . Str::camel($containerName)) : Str::camel($containerName);
+        return $sectionName ? (Str::camel($sectionName).'@'.Str::camel($containerName)) : Str::camel($containerName);
     }
 
     public function loadLocalsFromShip(): void

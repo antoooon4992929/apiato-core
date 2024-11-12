@@ -6,9 +6,9 @@ trait FormatterTrait
 {
     public function prependOperationToName($operation, $class): string
     {
-        $className = ('list' == $operation) ? ngettext($class) : $class;
+        $className = ($operation == 'list') ? ngettext($class) : $class;
 
-        return $operation . $this->capitalize($className);
+        return $operation.$this->capitalize($className);
     }
 
     public function capitalize($word): string

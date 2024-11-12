@@ -8,7 +8,7 @@ trait MigrationsLoaderTrait
 {
     public function loadMigrationsFromContainers($containerPath): void
     {
-        $containerMigrationDirectory = $containerPath . '/Data/Migrations';
+        $containerMigrationDirectory = $containerPath.'/Data/Migrations';
         $this->loadMigrations($containerMigrationDirectory);
     }
 

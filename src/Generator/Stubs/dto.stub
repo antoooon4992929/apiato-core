@@ -1,0 +1,11 @@
+<?php
+
+namespace App\Containers\{{section-name}}\{{container-name}}\DTO;
+
+use App\Ship\Parents\DTO\Data as ParentData;
+
+class {{class-name}} extends ParentData
+{
+    public function __construct(
+    ) {}
+}

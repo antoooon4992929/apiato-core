@@ -1,28 +1,30 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Controllers;
 
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Delete{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Delete{{model}}Request;
-use App\Ship\Exceptions\DeleteResourceFailedException;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\Containers\{{section-name}}\{{container-name}}\DTO\Delete{{model}}Data;
+use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Requests\Delete{{model}}Request;
+use App\Ship\Parents\Controllers\ApiController as ParentApiController;
 use Illuminate\Http\JsonResponse;
+use Throwable;
 
-class {{class-name}} extends {{base-controller}}
+class {{class-name}} extends ParentApiController
 {
-    public function __construct(
-        private readonly Delete{{model}}Action $action,
-    ) {
-    }
-
     /**
-     * @throws DeleteResourceFailedException
-     * @throws NotFoundException
+     * Delete {{model}}
+     *
+     * This endpoint allows you to delete {{model}}.
+     *
+     * @group {{container-name}}
+     *
+     * @throws Throwable
      */
-    public function __invoke(Delete{{model}}Request $request): JsonResponse
+    public function __invoke(Delete{{model}}Request $request, {{model}} ${{_model}}): JsonResponse
     {
-        $this->action->run($request);
+        $data = Delete{{model}}Data::from($request->validated());
+        app(Delete{{model}}Action::class)->transactionalRun($data, ${{_model}});
 
         return $this->noContent();
     }

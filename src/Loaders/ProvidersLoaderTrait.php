@@ -17,7 +17,7 @@ trait ProvidersLoaderTrait
      */
     public function loadOnlyMainProvidersFromContainers($containerPath): void
     {
-        $containerProvidersDirectory = $containerPath . '/Providers';
+        $containerProvidersDirectory = $containerPath.'/Providers';
         $this->loadProviders($containerProvidersDirectory);
     }
 
@@ -52,10 +52,5 @@ trait ProvidersLoaderTrait
                 $this->loadProvider($provider);
             }
         }
-    }
-
-    public function loadOnlyShipProviderFromShip(): void
-    {
-        $this->loadProvider('App\Ship\Providers\ShipProvider');
     }
 }

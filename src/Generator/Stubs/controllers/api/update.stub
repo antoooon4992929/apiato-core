@@ -1,33 +1,35 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Controllers;
 
-use Apiato\Core\Exceptions\IncorrectIdException;
-use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Update{{model}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Update{{model}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Exceptions\UpdateResourceFailedException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\Containers\{{section-name}}\{{container-name}}\DTO\Update{{model}}Data;
+use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Requests\Update{{model}}Request;
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Transformers\{{model}}Transformer;
+use App\Ship\Parents\Controllers\ApiController as ParentApiController;
+use Illuminate\Http\JsonResponse;
+use Throwable;
 
-class {{class-name}} extends {{base-controller}}
+class {{class-name}} extends ParentApiController
 {
-    public function __construct(
-        private readonly Update{{model}}Action $action
-    ) {
-    }
-
     /**
-     * @throws InvalidTransformerException
-     * @throws UpdateResourceFailedException
-     * @throws IncorrectIdException
-     * @throws NotFoundException
+     * Update {{model}}
+     *
+     * This endpoint allows you to update {{model}}.
+     *
+     * @group {{container-name}}
+     *
+     * @transformer App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer
+     * @transformerModel App\Containers\{{section-name}}\{{container-name}}\Models\{{model}}
+     *
+     * @throws Throwable
      */
-    public function __invoke(Update{{model}}Request $request): array
+    public function __invoke(Update{{model}}Request $request, {{model}} ${{_model}}): JsonResponse
     {
-        ${{entity}} = $this->action->run($request);
+        $data = Update{{model}}Data::from($request->validated());
+        ${{_model}} = app(Update{{model}}Action::class)->transactionalRun($data, ${{_model}});
 
-        return $this->transform(${{entity}}, {{model}}Transformer::class);
+        return $this->responseWithTransform(${{_model}}, {{model}}Transformer::class);
     }
 }

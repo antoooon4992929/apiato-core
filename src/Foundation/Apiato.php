@@ -6,12 +6,8 @@ use Illuminate\Support\Facades\File;
 
 class Apiato
 {
-    /**
-     * The Apiato version.
-     */
-    public const VERSION = '12.0.0';
-
     private const SHIP_NAME = 'ship';
+
     private const CONTAINERS_DIRECTORY_NAME = 'Containers';
 
     public function getShipFoldersNames(): array
@@ -42,7 +38,7 @@ class Apiato
 
     private function getSectionPath(string $sectionName): string
     {
-        return app_path(self::CONTAINERS_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName);
+        return app_path(self::CONTAINERS_DIRECTORY_NAME.DIRECTORY_SEPARATOR.$sectionName);
     }
 
     /**
@@ -52,7 +48,7 @@ class Apiato
     {
         $classString = $this->getClassFullNameFromFile($filePathName);
 
-        return new $classString();
+        return new $classString;
     }
 
     /**
@@ -67,7 +63,7 @@ class Apiato
     /**
      * Get the class namespace form file path using token.
      */
-    protected function getClassNamespaceFromFile(string $filePathName): string|null
+    protected function getClassNamespaceFromFile(string $filePathName): ?string
     {
         $src = file_get_contents($filePathName);
 
@@ -78,10 +74,10 @@ class Apiato
         $namespace_ok = false;
         while ($i < $count) {
             $token = $tokens[$i];
-            if (is_array($token) && T_NAMESPACE === $token[0]) {
+            if (is_array($token) && $token[0] === T_NAMESPACE) {
                 // Found namespace declaration
                 while (++$i < $count) {
-                    if (';' === $tokens[$i]) {
+                    if ($tokens[$i] === ';') {
                         $namespace_ok = true;
                         $namespace = trim($namespace);
 
@@ -92,9 +88,9 @@ class Apiato
 
                 break;
             }
-            ++$i;
+            $i++;
         }
-        if (!$namespace_ok) {
+        if (! $namespace_ok) {
             return null;
         }
 
@@ -111,10 +107,10 @@ class Apiato
         $classes = [];
         $tokens = token_get_all($php_code);
         $count = count($tokens);
-        for ($i = 2; $i < $count; ++$i) {
-            if (T_CLASS == $tokens[$i - 2][0]
-                && T_WHITESPACE == $tokens[$i - 1][0]
-                && T_STRING == $tokens[$i][0]
+        for ($i = 2; $i < $count; $i++) {
+            if ($tokens[$i - 2][0] == T_CLASS
+                && $tokens[$i - 1][0] == T_WHITESPACE
+                && $tokens[$i][0] == T_STRING
             ) {
                 $class_name = $tokens[$i][1];
                 $classes[] = $class_name;
@@ -178,6 +174,6 @@ class Apiato
 
     public function getSectionContainerPaths(string $sectionName): array
     {
-        return File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME . DIRECTORY_SEPARATOR . $sectionName));
+        return File::directories(app_path(self::CONTAINERS_DIRECTORY_NAME.DIRECTORY_SEPARATOR.$sectionName));
     }
 }

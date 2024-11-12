@@ -37,16 +37,16 @@ trait ParserTrait
 
     private function maskPathVariables($key)
     {
-        return '{' . $key . '}';
+        return '{'.$key.'}';
     }
 
     private function maskFileVariables($key)
     {
-        return '{' . $key . '}';
+        return '{'.$key.'}';
     }
 
     private function maskStubVariables($key)
     {
-        return '{{' . $key . '}}';
+        return '{{'.$key.'}}';
     }
 }

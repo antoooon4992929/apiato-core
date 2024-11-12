@@ -2,32 +2,21 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
 
-use Apiato\Core\Exceptions\IncorrectIdException;
+use App\Containers\{{section-name}}\{{container-name}}\DTO\Update{{model}}Data;
 use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Update{{model}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Update{{model}}Request;
-use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Exceptions\UpdateResourceFailedException;
 use App\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {
-    public function __construct(
-        private readonly Update{{model}}Task $update{{model}}Task,
-    ) {
-    }
-
     /**
      * @throws UpdateResourceFailedException
-     * @throws IncorrectIdException
-     * @throws NotFoundException
      */
-    public function run(Update{{model}}Request $request): {{model}}
+    public function run(Update{{model}}Data $data, {{model}} ${{_model}}): {{model}}
     {
-        $data = $request->sanitizeInput([
-            // add your request data here
-        ]);
+        $updated{{model}} = app(Update{{model}}Task::class)->run($data->toArray(), ${{_model}}->id);
 
-        return $this->update{{model}}Task->run($data, $request->id);
+        return $updated{{model}};
     }
 }

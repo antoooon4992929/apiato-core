@@ -6,15 +6,14 @@ use Apiato\Core\Foundation\Facades\Apiato;
 
 trait AutoLoaderTrait
 {
-    // Using each component loader trait
+    use AliasesLoaderTrait;
+    use CommandsLoaderTrait;
     use ConfigsLoaderTrait;
+    use HelpersLoaderTrait;
     use LocalizationLoaderTrait;
     use MigrationsLoaderTrait;
-    use ViewsLoaderTrait;
     use ProvidersLoaderTrait;
-    use CommandsLoaderTrait;
-    use AliasesLoaderTrait;
-    use HelpersLoaderTrait;
+    use ViewsLoaderTrait;
 
     /**
      * To be used from the `boot` function of the main service provider.
@@ -41,7 +40,6 @@ trait AutoLoaderTrait
     public function runLoaderRegister(): void
     {
         $this->loadConfigsFromShip();
-        $this->loadOnlyShipProviderFromShip();
 
         foreach (Apiato::getAllContainerPaths() as $containerPath) {
             $this->loadConfigsFromContainers($containerPath);

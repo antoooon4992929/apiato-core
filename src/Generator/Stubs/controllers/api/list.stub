@@ -1,31 +1,35 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Controllers;
 
-use Apiato\Core\Exceptions\CoreInternalErrorException;
-use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\List{{models}}Action;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\List{{models}}Request;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Parents\Controllers\{{base-controller}};
-use Prettus\Repository\Exceptions\RepositoryException;
+use App\Containers\{{section-name}}\{{container-name}}\DTO\List{{models}}Data;
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Requests\List{{models}}Request;
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Transformers\{{model}}Transformer;
+use App\Ship\Exceptions\InvalidRequestParamsException;
+use App\Ship\Parents\Controllers\ApiController as ParentApiController;
+use Illuminate\Http\JsonResponse;
 
-class {{class-name}} extends {{base-controller}}
+class {{class-name}} extends ParentApiController
 {
-    public function __construct(
-        private readonly List{{models}}Action $action
-    ) {
-    }
 
     /**
-     * @throws InvalidTransformerException
-     * @throws CoreInternalErrorException
-     * @throws RepositoryException
+     * List all {{models}}
+     *
+     * This endpoint allows you to list all {{models}}.
+     *
+     * @group {{container-name}}
+     *
+     * @transformerCollection App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer
+     * @transformerModel App\Containers\{{section-name}}\{{container-name}}\Models\{{model}}
+     *
+     * @throws InvalidRequestParamsException
      */
-    public function __invoke(List{{models}}Request $request): array
+    public function __invoke(List{{models}}Request $request): JsonResponse
     {
-        ${{entities}} = $this->action->run($request);
+        $data = List{{models}}Data::from($request->validated());
+        ${{_models}} = app(List{{models}}Action::class)->run($data);
 
-        return $this->transform(${{entities}}, {{model}}Transformer::class);
+        return $this->responseWithTransform(${{_models}}, {{model}}Transformer::class);
     }
 }

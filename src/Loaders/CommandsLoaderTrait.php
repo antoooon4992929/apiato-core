@@ -9,7 +9,7 @@ trait CommandsLoaderTrait
 {
     public function loadCommandsFromContainers($containerPath): void
     {
-        $containerCommandsDirectory = $containerPath . '/UI/CLI/Commands';
+        $containerCommandsDirectory = $containerPath.'/UI/CLI/Commands';
         $this->loadTheConsoles($containerCommandsDirectory);
     }
 
@@ -20,7 +20,7 @@ trait CommandsLoaderTrait
 
             foreach ($files as $consoleFile) {
                 // Do not load route files
-                if (!$this->isRouteFile($consoleFile)) {
+                if (! $this->isRouteFile($consoleFile)) {
                     $consoleClass = Apiato::getClassFullNameFromFile($consoleFile->getPathname());
                     // When user from the Main Service Provider, which extends Laravel
                     // service provider you get access to `$this->commands`
@@ -32,7 +32,7 @@ trait CommandsLoaderTrait
 
     private function isRouteFile($consoleFile): bool
     {
-        return 'closures.php' === $consoleFile->getFilename();
+        return $consoleFile->getFilename() === 'console.php';
     }
 
     public function loadCommandsFromShip(): void
@@ -43,7 +43,7 @@ trait CommandsLoaderTrait
 
     public function loadCommandsFromCore(): void
     {
-        $coreCommandsDirectory = __DIR__ . '/../Commands';
+        $coreCommandsDirectory = __DIR__.'/../Commands';
         $this->loadTheConsoles($coreCommandsDirectory);
     }
 }

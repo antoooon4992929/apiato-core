@@ -3,43 +3,30 @@
 namespace Apiato\Core\Abstracts\Repositories;
 
 use Apiato\Core\Traits\CanEagerLoadTrait;
+use Apiato\Core\Traits\HasAvailableSortsTrait;
+use Apiato\Core\Traits\HasKeywordsSearchTrait;
 use Apiato\Core\Traits\HasRequestCriteriaTrait;
 use Illuminate\Support\Facades\Request;
-use Prettus\Repository\Contracts\CacheableInterface as PrettusCacheable;
-use Prettus\Repository\Criteria\RequestCriteria;
-use Prettus\Repository\Eloquent\BaseRepository as PrettusRepository;
-use Prettus\Repository\Traits\CacheableRepository as PrettusCacheableRepository;
+use Prettus\Repository\Eloquent\BaseRepository;
 
-abstract class Repository extends PrettusRepository implements PrettusCacheable
+class Repository extends BaseRepository
 {
-    use HasRequestCriteriaTrait;
     use CanEagerLoadTrait;
-    use PrettusCacheableRepository {
-        PrettusCacheableRepository::paginate as cacheablePaginate;
-    }
+    use HasAvailableSortsTrait;
+    use HasKeywordsSearchTrait;
+    use HasRequestCriteriaTrait;
 
-    // TODO: BC: set return type to void
-    public function boot()
+    protected int $maxPaginationLimit = 0;
+
+    protected ?bool $allowDisablePagination = null;
+
+    public function boot(): void
     {
         parent::boot();
 
         $this->eagerLoadRequestedRelations();
     }
 
-    /**
-     * Define the maximum number of entries per page that is returned.
-     * Set to 0 to "disable" this feature.
-     */
-    protected int $maxPaginationLimit = 0;
-
-    protected bool|null $allowDisablePagination = null;
-
-    /**
-     * This function relies on strict conventions:
-     *    - Repository name should be same as it's model name (model: Foo -> repository: FooRepository).
-     *    - If the container contains Models with names different from the container name, the repository class must
-     *      implement model() method and return the FQCN e.g., Role::class
-     */
     public function model(): string
     {
         $className = $this->getClassName(); // e.g. UserRepository
@@ -62,7 +49,7 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
 
     public function getModelNamespace(array|string $modelName): string
     {
-        return 'App\\Containers\\' . $this->getCurrentSection() . '\\' . $this->getCurrentContainer() . '\\Models\\' . $modelName;
+        return 'App\\Containers\\'.$this->getCurrentSection().'\\'.$this->getCurrentContainer().'\\Models\\'.$modelName;
     }
 
     public function getCurrentSection(): string
@@ -75,18 +62,6 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
         return explode('\\', static::class)[3];
     }
 
-    /**
-     * Paginate the response.
-     *
-     * Apply pagination to the response.
-     * Use ?limit= to specify the number of entities in the response.
-     * The client can request all data (skipping pagination) by applying ?limit=0 to the request, if
-     * skipping pagination is allowed.
-     *
-     * @param null $limit
-     * @param array $columns
-     * @param string $method
-     */
     public function paginate($limit = null, $columns = ['*'], $method = 'paginate'): mixed
     {
         $limit = $this->setPaginationLimit($limit);
@@ -99,7 +74,7 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
             $limit = $this->maxPaginationLimit;
         }
 
-        return $this->cacheablePaginate($limit, $columns, $method);
+        return parent::paginate($limit, $columns, $method);
     }
 
     public function setPaginationLimit($limit): mixed
@@ -111,17 +86,16 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
 
     public function wantsToSkipPagination(mixed $limit): bool
     {
-        return '0' == $limit;
+        return $limit == '0';
     }
 
     public function canSkipPagination(): mixed
     {
         // check local (per repository) rule
-        if (!is_null($this->allowDisablePagination)) {
+        if (! is_null($this->allowDisablePagination)) {
             return $this->allowDisablePagination;
         }
 
-        // check global (.env) rule
         return config('repository.pagination.skip');
     }
 
@@ -130,20 +104,13 @@ abstract class Repository extends PrettusRepository implements PrettusCacheable
         return $this->maxPaginationLimit > 0 && $limit > $this->maxPaginationLimit;
     }
 
-    public function addRequestCriteria(array $fieldsToDecode = ['id']): static
+    public function max(string $column)
     {
-        $this->pushCriteria(app(RequestCriteria::class));
-        if ($this->shouldDecodeSearch()) {
-            $this->decodeSearchQueryString($fieldsToDecode);
-        }
-
-        return $this;
+        return $this->model->max($column);
     }
 
-    public function removeRequestCriteria(): static
+    public function min(string $column)
     {
-        $this->popCriteria(RequestCriteria::class);
-
-        return $this;
+        return $this->model->min($column);
     }
 }

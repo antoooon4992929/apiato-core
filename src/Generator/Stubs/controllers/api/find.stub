@@ -1,28 +1,33 @@
 <?php
 
-namespace App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Controllers;
+namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Controllers;
 
-use Apiato\Core\Exceptions\InvalidTransformerException;
 use App\Containers\{{section-name}}\{{container-name}}\Actions\Find{{model}}ByIdAction;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Requests\Find{{model}}ByIdRequest;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer;
-use App\Ship\Exceptions\NotFoundException;
-use App\Ship\Parents\Controllers\{{base-controller}};
+use App\Containers\{{section-name}}\{{container-name}}\DTO\Find{{model}}ByIdData;
+use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Requests\Find{{model}}ByIdRequest;
+use App\Containers\{{section-name}}\{{container-name}}\UI\API\Transformers\{{model}}Transformer;
+use App\Ship\Parents\Controllers\ApiController as ParentApiController;
+use Illuminate\Http\JsonResponse;
 
-class {{class-name}} extends {{base-controller}}
+class {{class-name}} extends ParentApiController
 {
-    public function __construct(
-        private readonly Find{{model}}ByIdAction $action
-    ) {
-    }
 
     /**
-     * @throws InvalidTransformerException|NotFoundException
+     * Find {{model}} by ID
+     *
+     * This endpoint allows you to find a {{model}} by its ID.
+     *
+     * @group {{container-name}}
+     *
+     * @transformer App\Containers\{{section-name}}\{{container-name}}\UI\{{user-interface}}\Transformers\{{model}}Transformer
+     * @transformerModel App\Containers\{{section-name}}\{{container-name}}\Models\{{model}}
      */
-    public function __invoke(Find{{model}}ByIdRequest $request): array
+    public function __invoke(Find{{model}}ByIdRequest $request, {{model}} ${{_model}}): JsonResponse
     {
-        ${{entity}} = $this->action->run($request);
+        $data = Find{{model}}ByIdData::from($request->validated());
+        ${{_model}} = app(Find{{model}}ByIdAction::class)->run($data, ${{_model}});
 
-        return $this->transform(${{entity}}, {{model}}Transformer::class);
+        return $this->responseWithTransform(${{_model}}, {{model}}Transformer::class);
     }
 }

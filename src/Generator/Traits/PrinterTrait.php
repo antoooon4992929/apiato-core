@@ -6,7 +6,7 @@ trait PrinterTrait
 {
     public function printStartedMessage($containerName, $fileName)
     {
-        $this->printInfoMessage('> Generating (' . $fileName . ') in (' . $containerName . ') Container.');
+        $this->printInfoMessage('> Generating ('.$fileName.') in ('.$containerName.') Container.');
     }
 
     public function printInfoMessage($message)
@@ -19,7 +19,7 @@ trait PrinterTrait
      */
     public function printFinishedMessage($type)
     {
-        $this->printInfoMessage($type . ' generated successfully.');
+        $this->printInfoMessage($type.' generated successfully.');
     }
 
     public function printErrorMessage($message)

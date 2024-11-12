@@ -19,36 +19,42 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
         ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
         ['event', null, InputOption::VALUE_OPTIONAL, 'The Event this task fires'],
     ];
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'apiato:generate:task';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a Task file for a Container';
+
     /**
      * The type of class being generated.
      */
     protected string $fileType = 'Task';
+
     /**
      * The structure of the file path.
      */
     protected string $pathStructure = '{section-name}/{container-name}/Tasks/*';
+
     /**
      * The structure of the file name.
      */
     protected string $nameStructure = '{file-name}';
+
     /**
      * The name of the stub file.
      */
     protected string $stubName = 'tasks/generic.stub';
 
-    public function getUserInputs(): array|null
+    public function getUserInputs(): ?array
     {
         $model = $this->checkParameterOrAsk('model', 'Enter the name of the model this task is for.', $this->containerName);
         $stub = Str::lower(
@@ -62,9 +68,11 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
 
         $event = $this->option('event');
         // load a new stub-file based on the users choice
-        $this->stubName = ($event ? 'tasks/with_event/' : 'tasks/') . $stub . '.stub';
+        $this->stubName = ($event ? 'tasks/with_event/' : 'tasks/').$stub.'.stub';
 
         $models = Pluralizer::plural($model);
+
+        $entity = Str::lower($model);
 
         return [
             'path-parameters' => [
@@ -79,7 +87,8 @@ class TaskGenerator extends GeneratorCommand implements ComponentsGenerator
                 'class-name' => $this->fileName,
                 'model' => $model,
                 'models' => $models,
-                '_model' => Str::lower($model),
+                '_model' => $entity,
+                '_models' => Pluralizer::plural($entity),
                 'event' => $event,
             ],
             'file-parameters' => [

@@ -22,13 +22,13 @@ trait SeederLoaderTrait
 
     private function loadSeedersFromContainers(): void
     {
-        $seedersClasses = new Collection();
+        $seedersClasses = new Collection;
 
         $containersDirectories = [];
 
         foreach (Apiato::getSectionNames() as $sectionName) {
             foreach (Apiato::getSectionContainerNames($sectionName) as $containerName) {
-                $containersDirectories[] = base_path('app/Containers/' . $sectionName . '/' . $containerName . $this->seedersPath);
+                $containersDirectories[] = base_path('app/Containers/'.$sectionName.'/'.$containerName.$this->seedersPath);
             }
         }
 
@@ -62,7 +62,7 @@ trait SeederLoaderTrait
 
     private function sortSeeders($seedersClasses): Collection
     {
-        $orderedSeederClasses = new Collection();
+        $orderedSeederClasses = new Collection;
 
         if ($seedersClasses->isEmpty()) {
             return $orderedSeederClasses;

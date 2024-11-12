@@ -4,12 +4,12 @@ namespace Apiato\Core\Abstracts\Providers;
 
 use Apiato\Core\Loaders\AliasesLoaderTrait;
 use Apiato\Core\Loaders\ProvidersLoaderTrait;
-use Illuminate\Support\ServiceProvider as LaravelAppServiceProvider;
+use Illuminate\Support\ServiceProvider;
 
-abstract class MainServiceProvider extends LaravelAppServiceProvider
+abstract class MainServiceProvider extends ServiceProvider
 {
-    use ProvidersLoaderTrait;
     use AliasesLoaderTrait;
+    use ProvidersLoaderTrait;
 
     /**
      * Register any application services.
@@ -23,7 +23,5 @@ abstract class MainServiceProvider extends LaravelAppServiceProvider
     /**
      * Bootstrap any application services.
      */
-    public function boot(): void
-    {
-    }
+    public function boot(): void {}
 }

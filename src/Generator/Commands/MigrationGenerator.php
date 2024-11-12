@@ -19,36 +19,42 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
     public array $inputs = [
         ['tablename', null, InputOption::VALUE_OPTIONAL, 'The name for the database table'],
     ];
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'apiato:generate:migration';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create an "empty" migration file for a Container';
+
     /**
      * The type of class being generated.
      */
     protected string $fileType = 'Migration';
+
     /**
      * The structure of the file path.
      */
     protected string $pathStructure = '{section-name}/{container-name}/Data/Migrations/*';
+
     /**
      * The structure of the file name.
      */
     protected string $nameStructure = '{date}_{file-name}';
+
     /**
      * The name of the stub file.
      */
     protected string $stubName = 'migration.stub';
 
-    public function getUserInputs(): array|null
+    public function getUserInputs(): ?array
     {
         $tableName = Str::lower($this->checkParameterOrAsk('tablename', 'Enter the name of the database table', Str::snake(Pluralizer::plural($this->containerName))));
 
@@ -61,9 +67,9 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
             'container-name' => $this->containerName,
         ]);
         $folder = $this->getFilePath($folder);
-        $folder = rtrim($folder, $this->parsedFileName . '.' . $this->getDefaultFileExtension());
+        $folder = rtrim($folder, $this->parsedFileName.'.'.$this->getDefaultFileExtension());
 
-        $migrationName = $this->fileName . '.' . $this->getDefaultFileExtension();
+        $migrationName = $this->fileName.'.'.$this->getDefaultFileExtension();
 
         // Get the content of this folder
         $files = File::allFiles($folder);
@@ -103,7 +109,7 @@ class MigrationGenerator extends GeneratorCommand implements ComponentsGenerator
      */
     public function getDefaultFileName(): string
     {
-        return 'create_' . Str::snake(Pluralizer::plural($this->containerName)) . '_table';
+        return 'create_'.Str::snake(Pluralizer::plural($this->containerName)).'_table';
     }
 
     /**

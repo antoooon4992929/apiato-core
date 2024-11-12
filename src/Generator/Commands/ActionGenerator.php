@@ -19,36 +19,42 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
         ['stub', null, InputOption::VALUE_OPTIONAL, 'The stub file to load for this generator.'],
         ['ui', null, InputOption::VALUE_OPTIONAL, 'The user-interface to generate the Action for.'],
     ];
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'apiato:generate:action';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a Action file for a Container';
+
     /**
      * The type of class being generated.
      */
     protected string $fileType = 'Action';
+
     /**
      * The structure of the file path.
      */
     protected string $pathStructure = '{section-name}/{container-name}/Actions/*';
+
     /**
      * The structure of the file name.
      */
     protected string $nameStructure = '{file-name}';
+
     /**
      * The name of the stub file.
      */
     protected string $stubName = 'actions/generic.stub';
 
-    public function getUserInputs(): array|null
+    public function getUserInputs(): ?array
     {
         $model = $this->checkParameterOrAsk('model', 'Enter the name of the model this action is for.', $this->containerName);
         $ui = Str::upper($this->checkParameterOrChoice('ui', 'Which UI is this Action for?', ['API', 'WEB'], 0));
@@ -62,9 +68,11 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
         );
 
         // Load a new stub-file based on the users choice
-        $this->stubName = 'actions/' . $stub . '.stub';
+        $this->stubName = 'actions/'.$stub.'.stub';
 
         $models = Pluralizer::plural($model);
+
+        $entity = Str::lower($model);
 
         return [
             'path-parameters' => [
@@ -79,6 +87,8 @@ class ActionGenerator extends GeneratorCommand implements ComponentsGenerator
                 'class-name' => $this->fileName,
                 'model' => $model,
                 'models' => $models,
+                '_model' => $entity,
+                '_models' => Pluralizer::plural($entity),
                 'ui' => $ui,
             ],
             'file-parameters' => [

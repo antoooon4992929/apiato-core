@@ -2,25 +2,19 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\Actions;
 
+use App\Containers\{{section-name}}\{{container-name}}\DTO\Delete{{model}}Data;
+use App\Containers\{{section-name}}\{{container-name}}\Models\{{model}};
 use App\Containers\{{section-name}}\{{container-name}}\Tasks\Delete{{model}}Task;
-use App\Containers\{{section-name}}\{{container-name}}\UI\{{ui}}\Requests\Delete{{model}}Request;
 use App\Ship\Exceptions\DeleteResourceFailedException;
-use App\Ship\Exceptions\NotFoundException;
 use App\Ship\Parents\Actions\Action as ParentAction;
 
 class {{class-name}} extends ParentAction
 {
-    public function __construct(
-        private readonly Delete{{model}}Task $delete{{model}}Task,
-    ) {
-    }
-
     /**
      * @throws DeleteResourceFailedException
-     * @throws NotFoundException
      */
-    public function run(Delete{{model}}Request $request): int
+    public function run(Delete{{model}}Data $data, {{model}} ${{_model}}): void
     {
-        return $this->delete{{model}}Task->run($request->id);
+        app(Delete{{model}}Task::class)->run(${{_model}}->id);
     }
 }

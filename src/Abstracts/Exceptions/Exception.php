@@ -3,18 +3,20 @@
 namespace Apiato\Core\Abstracts\Exceptions;
 
 use Exception as BaseException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Log;
 
 abstract class Exception extends BaseException
 {
     protected string $environment;
+
     protected array $errors = [];
 
     public function __construct(
-        string|null $message = null,
-        int|null $code = null,
-        \Throwable|null $previous = null,
+        ?string $message = null,
+        ?int $code = null,
+        ?\Throwable $previous = null,
     ) {
         // Detect and set the running environment
         $this->environment = Config::get('app.env');
@@ -22,12 +24,39 @@ abstract class Exception extends BaseException
         parent::__construct($this->prepareMessage($message), $this->prepareStatusCode($code), $previous);
     }
 
-    private function prepareMessage(string|null $message = null): string
+    public function render(): JsonResponse
+    {
+        return $this->buildResponse();
+    }
+
+    private function buildResponse(): JsonResponse
+    {
+        $e = $this;
+        if (config('app.debug')) {
+            $response = [
+                'message' => $e->getMessage(),
+                'errors' => $e->getErrors(),
+                'exception' => get_class($e),
+                'file' => $e->getFile(),
+                'line' => $e->getLine(),
+                'trace' => $e->getTrace(),
+            ];
+        } else {
+            $response = [
+                'message' => $e->getMessage(),
+                'errors' => $e->getErrors(),
+            ];
+        }
+
+        return response()->json($response, (int) $e->getCode());
+    }
+
+    private function prepareMessage(?string $message = null): string
     {
         return is_null($message) ? $this->message : $message;
     }
 
-    private function prepareStatusCode(int|null $code = null): int
+    private function prepareStatusCode(?int $code = null): int
     {
         return is_null($code) ? $this->code : $code;
     }
@@ -44,8 +73,8 @@ abstract class Exception extends BaseException
             $error = $error->getMessage();
         }
 
-        if ('testing' !== $this->environment || true === $force) {
-            Log::error('[DEBUG] ' . $error);
+        if ($this->environment !== 'testing' || $force === true) {
+            Log::error('[DEBUG] '.$error);
         }
 
         return $this;

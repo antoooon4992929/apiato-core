@@ -9,7 +9,7 @@ trait HelpersLoaderTrait
 {
     public function loadHelpersFromContainers($containerPath): void
     {
-        $containerHelpersDirectory = $containerPath . '/Helpers';
+        $containerHelpersDirectory = $containerPath.'/Helpers';
         $this->loadHelpers($containerHelpersDirectory);
     }
 

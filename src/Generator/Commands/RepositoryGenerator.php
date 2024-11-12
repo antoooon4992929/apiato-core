@@ -14,36 +14,42 @@ class RepositoryGenerator extends GeneratorCommand implements ComponentsGenerato
      */
     public array $inputs = [
     ];
+
     /**
      * The console command name.
      *
      * @var string
      */
     protected $name = 'apiato:generate:repository';
+
     /**
      * The console command description.
      *
      * @var string
      */
     protected $description = 'Create a new Repository class';
+
     /**
      * The type of class being generated.
      */
     protected string $fileType = 'Repository';
+
     /**
      * The structure of the file path.
      */
     protected string $pathStructure = '{section-name}/{container-name}/Data/Repositories/*';
+
     /**
      * The structure of the file name.
      */
     protected string $nameStructure = '{file-name}';
+
     /**
      * The name of the stub file.
      */
     protected string $stubName = 'repository.stub';
 
-    public function getUserInputs(): array|null
+    public function getUserInputs(): ?array
     {
         return [
             'path-parameters' => [

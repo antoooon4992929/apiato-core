@@ -16,10 +16,10 @@ use Symfony\Component\Console\Input\InputOption;
 
 abstract class GeneratorCommand extends Command
 {
-    use ParserTrait;
-    use PrinterTrait;
     use FileSystemTrait;
     use FormatterTrait;
+    use ParserTrait;
+    use PrinterTrait;
 
     /**
      * Root directory of all sections.
@@ -98,22 +98,22 @@ abstract class GeneratorCommand extends Command
 
         $this->sectionName = ucfirst($this->checkParameterOrAsk('section', 'Enter the name of the Section', self::DEFAULT_SECTION_NAME));
         $this->containerName = ucfirst($this->checkParameterOrAsk('container', 'Enter the name of the Container'));
-        $this->fileName = $this->checkParameterOrAsk('file', 'Enter the name of the ' . $this->fileType . ' file', $this->getDefaultFileName());
+        $this->fileName = $this->checkParameterOrAsk('file', 'Enter the name of the '.$this->fileType.' file', $this->getDefaultFileName());
 
         // Now fix the section, container and file name
         $this->sectionName = $this->removeSpecialChars($this->sectionName);
         $this->containerName = $this->removeSpecialChars($this->containerName);
-        if (!('Configuration' === $this->fileType)) {
+        if (! ($this->fileType === 'Configuration')) {
             $this->fileName = $this->removeSpecialChars($this->fileName);
         }
 
         // And we are ready to start
-        $this->printStartedMessage($this->sectionName . ':' . $this->containerName, $this->fileName);
+        $this->printStartedMessage($this->sectionName.':'.$this->containerName, $this->fileName);
 
         // Get user inputs
         $this->userData = $this->getUserInputs();
 
-        if (null === $this->userData) {
+        if ($this->userData === null) {
             // The user skipped this step
             return;
         }
@@ -123,7 +123,7 @@ abstract class GeneratorCommand extends Command
         $this->parsedFileName = $this->parseFileStructure($this->nameStructure, $this->userData['file-parameters']);
         $this->filePath = $this->getFilePath($this->parsePathStructure($this->pathStructure, $this->userData['path-parameters']));
 
-        if (!$this->fileSystem->exists($this->filePath)) {
+        if (! $this->fileSystem->exists($this->filePath)) {
             // Prepare stub content
             $this->stubContent = $this->getStubContent();
             $this->renderedStubContent = $this->parseStubContent($this->stubContent, $this->userData['stub-parameters']);
@@ -142,7 +142,7 @@ abstract class GeneratorCommand extends Command
      */
     private function validateGenerator($generator): void
     {
-        if (!$generator instanceof ComponentsGenerator) {
+        if (! $generator instanceof ComponentsGenerator) {
             throw new GeneratorErrorException('Your component maker command should implement ComponentsGenerator interface.');
         }
     }
@@ -150,11 +150,11 @@ abstract class GeneratorCommand extends Command
     /**
      * Checks if the param is set (via CLI), otherwise asks the user for a value.
      */
-    protected function checkParameterOrAsk($param, $question, string|null $default = null): mixed
+    protected function checkParameterOrAsk($param, $question, ?string $default = null): mixed
     {
         // Check if we already have a param set
         $value = $this->option($param);
-        if (null === $value) {
+        if ($value === null) {
             // There was no value provided via CLI, so ask the user…
             $value = $this->ask($question, $default);
         }
@@ -167,7 +167,7 @@ abstract class GeneratorCommand extends Command
      */
     protected function getDefaultFileName(): string
     {
-        return 'Default' . Str::ucfirst($this->fileType);
+        return 'Default'.Str::ucfirst($this->fileType);
     }
 
     /**
@@ -185,15 +185,15 @@ abstract class GeneratorCommand extends Command
      */
     private function sanitizeUserData($data): mixed
     {
-        if (!array_key_exists('path-parameters', $data)) {
+        if (! array_key_exists('path-parameters', $data)) {
             $data['path-parameters'] = [];
         }
 
-        if (!array_key_exists('stub-parameters', $data)) {
+        if (! array_key_exists('stub-parameters', $data)) {
             $data['stub-parameters'] = [];
         }
 
-        if (!array_key_exists('file-parameters', $data)) {
+        if (! array_key_exists('file-parameters', $data)) {
             $data['file-parameters'] = [];
         }
 
@@ -203,8 +203,8 @@ abstract class GeneratorCommand extends Command
     protected function getFilePath($path): string
     {
         // Complete the missing parts of the path
-        $path = base_path() . '/' .
-            str_replace('\\', '/', self::ROOT . '/' . $path) . '.' . $this->getDefaultFileExtension();
+        $path = base_path().'/'.
+            str_replace('\\', '/', self::ROOT.'/'.$path).'.'.$this->getDefaultFileExtension();
 
         // Try to create directory
         $this->createDirectory($path);
@@ -227,13 +227,13 @@ abstract class GeneratorCommand extends Command
     protected function getStubContent(): string
     {
         // Check if there is a custom file that overrides the default stubs
-        $path = app_path() . '/Ship/' . self::CUSTOM_STUB_PATH;
+        $path = app_path().'/Ship/'.self::CUSTOM_STUB_PATH;
         $file = str_replace('*', $this->stubName, $path);
 
         // Check if the custom file exists
-        if (!$this->fileSystem->exists($file)) {
+        if (! $this->fileSystem->exists($file)) {
             // It does not exist - so take the default file!
-            $path = __DIR__ . '/' . self::STUB_PATH;
+            $path = __DIR__.'/'.self::STUB_PATH;
             $file = str_replace('*', $this->stubName, $path);
         }
 
@@ -261,7 +261,7 @@ abstract class GeneratorCommand extends Command
     {
         // Check if we already have a param set
         $value = $this->option($param);
-        if (null === $value) {
+        if ($value === null) {
             // There was no value provided via CLI, so ask the user…
             $value = $this->choice($question, $choices, $default);
         }
@@ -273,7 +273,7 @@ abstract class GeneratorCommand extends Command
     {
         // Check if we already have a param set
         $value = $this->option($param);
-        if (null === $value) {
+        if ($value === null) {
             // There was no value provided via CLI, so ask the user...
             $value = $this->confirm($question, $default);
         }

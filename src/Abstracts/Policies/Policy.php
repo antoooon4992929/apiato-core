@@ -2,6 +2,4 @@
 
 namespace Apiato\Core\Abstracts\Policies;
 
-abstract class Policy
-{
-}
+abstract class Policy {}

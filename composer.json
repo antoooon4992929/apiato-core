@@ -1,102 +1,69 @@
 {
-    "name": "apiato/core",
-    "description": "Core package for Apiato.",
-    "keywords": [
-        "apiato",
-        "apiato core",
-        "core",
-        "Porto",
-        "Porto SAP"
-    ],
-    "license": "MIT",
-    "homepage": "https://apiato.io/",
-    "support": {
-        "issues": "https://github.com/apiato/core/issues",
-        "source": "https://github.com/apiato/core"
+  "name": "apiato/core",
+  "description": "Fork Apiato core",
+  "keywords": [
+    "apiato",
+    "apiato core",
+    "core",
+    "Porto",
+    "Porto SAP"
+  ],
+  "license": "MIT",
+  "homepage": "https://github.com/antoooon4992929/apiato-core",
+  "authors": [
+    {
+      "name": "Anton V",
+      "email": "anton.verishko@gmail.com",
+      "role": "Author"
+    }
+  ],
+  "require": {
+    "php": "^8.2",
+    "laravel/framework": "^11.0",
+    "prettus/l5-repository": "^2.9.1",
+    "spatie/laravel-data": "^4.11"
+  },
+  "require-dev": {
+    "laravel/pint": "^1.14",
+    "orchestra/testbench": "^9.1.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Apiato\\Core\\": "src/"
     },
-    "authors": [
-        {
-            "name": "Mahmoud Zalt",
-            "email": "mahmoud@zalt.me",
-            "role": "Author"
-        },
-        {
-            "name": "Mohammad Alavi",
-            "email": "mohammad.alavi1990@gmail.com",
-            "homepage": "https://mohammadalavi.com/",
-            "role": "Developer"
-        }
-    ],
-    "require": {
-        "php": "^8.2",
-        "apiato/container-installer": "^2.0.8",
-        "prettus/l5-repository": "^2.9.1",
-        "spatie/laravel-fractal": "^6.0",
-        "vinkla/hashids": "^12.0",
-        "ext-json": "*",
-        "guzzlehttp/guzzle": "^7.2",
-        "laravel/framework": "^11.0",
-        "laravel/passport": "^12.0.0",
-        "ext-gettext": "*"
-    },
-    "require-dev": {
-        "fakerphp/faker": "^1.19.1",
-        "friendsofphp/php-cs-fixer": "^3.8.0",
-        "jetbrains/phpstorm-attributes": "^1.0",
-        "mockery/mockery": "^1.4.4",
-        "orchestra/testbench": "^9.1.2",
-        "php-standard-library/psalm-plugin": "^2.3",
-        "phpmd/phpmd": "@stable",
-        "phpunit/phpunit": "^10.0",
-        "psalm/plugin-laravel": "^2.8",
-        "psalm/plugin-mockery": "^1.1",
-        "psalm/plugin-phpunit": "^0.18.4",
-        "roave/security-advisories": "dev-latest",
-        "vimeo/psalm": "^5.25.0"
-    },
-    "autoload": {
-        "psr-4": {
-            "Apiato\\Core\\": "src/"
-        },
-        "files": [
-            "src/Helpers/helpers.php"
-        ]
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "Apiato\\Core\\Tests\\": "tests/"
-        }
-    },
-    "extra": {
-        "laravel": {
-            "providers": [
-                "Apiato\\Core\\Providers\\ApiatoServiceProvider",
-                "Vinkla\\Hashids\\HashidsServiceProvider",
-                "Prettus\\Repository\\Providers\\RepositoryServiceProvider",
-                "Spatie\\Fractal\\FractalServiceProvider",
-                "Apiato\\Core\\Generator\\GeneratorsServiceProvider"
-            ],
-            "aliases": {
-                "Hashids": "Vinkla\\Hashids\\Facades\\Hashids",
-                "Fractal": "Spatie\\Fractal\\Facades\\Fractal"
-            }
-        }
-    },
-    "scripts": {
-        "php-cs-fixer": "php-cs-fixer --config=./php_cs.dist.php"
-    },
-    "config": {
-        "optimize-autoloader": true,
-        "preferred-install": "dist",
-        "sort-packages": true,
-        "allow-plugins": {
-            "apiato/container-installer": true,
-            "composer/package-versions-deprecated": true,
-            "wikimedia/composer-merge-plugin": true,
-            "pestphp/pest-plugin": true,
-            "php-http/discovery": true
-        }
-    },
-    "minimum-stability": "stable",
-    "prefer-stable": true
+    "files": [
+      "src/Helpers/helpers.php"
+    ]
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Apiato\\Core\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Apiato\\Core\\Providers\\ApiatoServiceProvider",
+        "Apiato\\Core\\Generator\\GeneratorsServiceProvider"
+      ],
+      "aliases": {
+      }
+    }
+  },
+  "scripts": {
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "preferred-install": "dist",
+    "sort-packages": true,
+    "allow-plugins": {
+      "apiato/container-installer": true,
+      "composer/package-versions-deprecated": true,
+      "wikimedia/composer-merge-plugin": true,
+      "pestphp/pest-plugin": true,
+      "php-http/discovery": true
+    }
+  },
+  "minimum-stability": "stable",
+  "prefer-stable": true
 }
