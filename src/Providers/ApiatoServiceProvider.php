@@ -3,9 +3,11 @@
 namespace Apiato\Core\Providers;
 
 use Apiato\Core\Abstracts\Providers\MainServiceProvider as AbstractMainServiceProvider;
+use Apiato\Core\Criterias\RequestCriteria;
 use Apiato\Core\Foundation\Apiato;
 use Apiato\Core\Loaders\AutoLoaderTrait;
 use Illuminate\Support\Facades\Schema;
+use Prettus\Repository\Criteria\RequestCriteria as ParentRequestCriteria;
 
 class ApiatoServiceProvider extends AbstractMainServiceProvider
 {
@@ -27,6 +29,9 @@ class ApiatoServiceProvider extends AbstractMainServiceProvider
         parent::register();
 
         $this->runLoaderRegister();
+
+        // Replace Prettus RequestCriteria
+        $this->app->bind(ParentRequestCriteria::class, RequestCriteria::class);
     }
 
     public function boot(): void
