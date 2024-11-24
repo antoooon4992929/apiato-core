@@ -2,9 +2,9 @@
 
 namespace App\Containers\{{section-name}}\{{container-name}}\UI\API\Requests;
 
+use Apiato\Core\Rules\AvailableSortsRule;
 use App\Containers\{{section-name}}\{{container-name}}\Data\Repositories\{{model}}Repository;
 use App\Ship\Parents\Requests\Request as ParentRequest;
-use App\Ship\Rules\AvailableSortsRule;
 
 class {{class-name}} extends ParentRequest
 {
