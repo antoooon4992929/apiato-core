@@ -2,7 +2,7 @@
 
 namespace Apiato\Core\Criterias;
 
-use App\Ship\Parents\Criterias\Criteria;
+use Apiato\Core\Abstracts\Criterias\Criteria;
 use Illuminate\Http\Request;
 use Prettus\Repository\Contracts\RepositoryInterface as PrettusRepositoryInterface;
 
