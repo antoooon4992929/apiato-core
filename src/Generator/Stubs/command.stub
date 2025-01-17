@@ -1,0 +1,30 @@
+<?php
+
+namespace App\Containers\{{section-name}}\{{container-name}}\UI\CLI\Commands;
+
+use App\Ship\Parents\Commands\ConsoleCommand;
+
+class TestCommand extends ConsoleCommand
+{
+    /**
+     * The name and signature of the console command.
+     *
+     * @var string
+     */
+    protected $signature = '';
+
+    /**
+     * The console command description.
+     *
+     * @var string
+     */
+    protected $description = '';
+
+    /**
+     * Execute the console command.
+     */
+    public function handle()
+    {
+        //
+    }
+}
