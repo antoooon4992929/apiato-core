@@ -62,6 +62,7 @@ class CommandGenerator extends GeneratorCommand implements ComponentsGenerator
                 '_container-name' => Str::lower($this->containerName),
                 'container-name' => $this->containerName,
                 'class-name' => $this->fileName,
+                'signature' => sprintf('app:%s', Str::snake($this->fileName, '-')),
             ],
             'file-parameters' => [
                 'file-name' => $this->fileName,
